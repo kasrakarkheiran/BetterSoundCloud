@@ -4,10 +4,14 @@ const packagefile = require("../package.json");
 const scdl = require("soundcloud-downloader").default;
 const https = require('https');
 const { f } = require("@cliqz/adblocker-electron");
+const path = require("path");
+const url = require("url");
+//const mm = require('music-metadata');
 
 // Discord RPC
 const { Client, StatusDisplayType } = require('@xhayper/discord-rpc');
-const { ActivityType } = require("discord-api-types/v10")
+const { ActivityType } = require("discord-api-types/v10");
+const { debuglog } = require("util");
 const client = new Client({
     clientId: "1054636117284106270" // Discord App Client ID
 });
@@ -154,6 +158,8 @@ webview.addEventListener("console-message", (e) => {
   } else if (e.message.split("|")[1] == "sciloaded") {
     console.log("SCI has been loaded succesfuly")
     clearInterval(sciloadingcheck)
+  } else if (e.message == "BSCReceive|UIDownloadsOpen"){
+    showdownloadfolder()
   }
 });
 
@@ -383,14 +389,64 @@ function scdownloaderbtnreq() {
     tooltip.innerHTML = "Started Downloading " + songtitle;
     scdl.download(downloadurl).then((stream) => {
       stream.pipe(
-        fs.createWriteStream(`${appdirectory}/Downloads/${songtitle}.mp3`)
+        fs.createWriteStream(`${appdirectory}\\Downloads\\${songtitle}.mp3`)
       );
-      tooltip.innerHTML = `Saved to ${appdirectory}/Downloads/${songtitle}.mp3`;
+      tooltip.innerHTML = `Saved to ${appdirectory}\\Downloads\\${songtitle}.mp3`;
       // ipcRenderer.send("appDownloaderFinish");
     });
   });
 }
 
+//Show Download
+const audioExtensions = new Set(['.mp3','.wav','.flac','.aac','.ogg','.m4a'])
+async function readdownloaddir(){
+  const files = await fs.promises.readdir(`${appdirectory}/Downloads`);
+  return files.filter(file => audioExtensions.has(path.extname(file).toLowerCase()));
+  
+}
+
+let downloadpage = document.getElementById("downloadpage")
+let songListDisplay = document.querySelector(".songlist")
+async function showdownloadfolder(){
+  downloadpage.classList.remove("fadedownloadpage")
+  if (!fs.existsSync(`${appdirectory}/Downloads`)) {
+    //NOTHING DOWNLOADED
+    songListDisplay.innerHTML = `<div> No Songs Downloaded </div>`
+    return;
+  }
+  try{
+    songList = await readdownloaddir()
+    songListDisplay.innerHTML = ''
+
+    if (songList.length === 0) {
+      songListDisplay.innerHTML = `<div> There is no song here </div>`
+      return;
+    }
+    for(const song of songList){
+      const li = document.createElement('li');
+      li.classList.add('downloadeditem')
+      li.innerHTML = `<span class="songtitle">${path.parse(song).name}</span><span class="duration">00:00</span>`
+
+      //audio player doesnt work yet.
+      li.addEventListener('click', () => {
+        const filePath = path.join(appdirectory, 'Downloads', song);
+        const fileUrl = url.pathToFileURL(filePath).href;
+        audioPlayer.src = fileUrl;
+        audioPlayer.play();
+      });
+
+      songListDisplay.appendChild(li);
+    }
+  }
+  catch(err){
+    console.log(err)
+    songListDisplay.innerHTML = `<div>${err.message}</div>`;
+  }
+}
+//hide download page
+function closedownloadfolder(){
+  downloadpage.classList.add("fadedownloadpage")
+}
 
 // Handle Custom Media keys functionality
 ipcRenderer.on("appReqMediaPlayPause", function (evt, message) {
@@ -461,3 +517,7 @@ function webviewscrldown() {
   console.log("scrolling")
   webview.executeJavaScript("window.scrollBy(0, 500)")
 }
+
+
+
+

@@ -745,3 +745,124 @@
     height: 70%;
   }
 }
+
+
+
+#downloadpage{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  z-index: 3;
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  flex-direction: column;
+  opacity: 1;
+  visibility: visible;
+  transition: 0.25s ease-in-out opacity, 0.25s ease-in-out visibility;
+  background-color: var(--rgba2);
+  backdrop-filter: blur(5px);
+  color: var(--200);
+}
+#downloadpage .toprow{
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  width: 100%;
+  height: 10%;
+}
+#downloadpage .closebtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+  cursor: pointer;
+  position: absolute;
+  right: 25px;
+  top: 25px;
+  opacity: 1;
+  transition: all 0.2s ease-in-out;
+  & svg {
+    transition: all 0.2s ease-in-out;
+    fill: var(--200);
+    width: 100%;
+    height: 100%;
+  }
+  &:hover svg {
+    fill: var(--50);
+    scale: 1.2
+  }
+}
+
+#downloadpage .titlerow{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 20%;
+}
+#downloadpage .titlerow h1{
+  font-size: 40px;
+  color: var(--50);
+}
+#downloadpage .songs{
+  width: 90%;
+  height: 60%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  overflow-y: scroll;
+  opacity: 1;
+  &::-webkit-scrollbar {
+    width: 10px;
+  }
+  &::-webkit-scrollbar-track {
+    background-color: var(--950);
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: var(--200);
+  }
+}
+#downloadpage .songs .songlist{
+  list-style: none;
+  padding:0;
+  margin:0;
+  width: 100%;
+  overflow-y: auto;
+}
+#downloadpage .songs .songlist .downloadeditem{
+  display:flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 15px;
+  margin-bottom: 5px;
+  border-radius:8px;
+  cursor: pointer;
+  opacity: 0.9;
+  background-color: rgba(255, 255, 255, 0.05);
+  transition: all 0.2s ease-in-out;
+}
+#downloadpage .songs .songlist .downloadeditem:hover{
+  background-color: var(--rgba2);
+  transform: translateY(-1px);
+}
+#downloadpage .songs .songlist .downloadeditem .songtitle{
+  font-weight: 500;
+  font-size: 1rem;
+  color: #eeeeee;
+}
+#downloadpage .songs .songlist .downloadeditem .duration{
+  font-size: 0.95rem;
+  color: #eeeeee;
+  margin-left: 15px;
+  white-space: nowrap;
+}
+.fadedownloadpage {
+  opacity: 0 !important;
+  visibility: hidden !important;
+}
+
