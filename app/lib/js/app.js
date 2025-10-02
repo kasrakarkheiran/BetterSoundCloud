@@ -407,6 +407,7 @@ async function readdownloaddir(){
 
 let downloadpage = document.getElementById("downloadpage")
 let songListDisplay = document.querySelector(".songlist")
+let audioPlayer = document.getElementById("audioPlayer")
 async function showdownloadfolder(){
   downloadpage.classList.remove("fadedownloadpage")
   if (!fs.existsSync(`${appdirectory}/Downloads`)) {
@@ -443,6 +444,10 @@ async function showdownloadfolder(){
     songListDisplay.innerHTML = `<div>${err.message}</div>`;
   }
 }
+
+
+
+
 //hide download page
 function closedownloadfolder(){
   downloadpage.classList.add("fadedownloadpage")

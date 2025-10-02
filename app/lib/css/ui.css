@@ -827,6 +827,13 @@
     background-color: var(--200);
   }
 }
+
+#downloadpage .songs #audioPlayer{
+  width: 100%;
+  margin-bottom: 5px;
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
 #downloadpage .songs .songlist{
   list-style: none;
   padding:0;
@@ -842,8 +849,8 @@
   margin-bottom: 5px;
   border-radius:8px;
   cursor: pointer;
-  opacity: 0.9;
-  background-color: rgba(255, 255, 255, 0.05);
+background-color: rgba(255, 255, 255, 0.05);  opacity: 0.9;
+  
   transition: all 0.2s ease-in-out;
 }
 #downloadpage .songs .songlist .downloadeditem:hover{
